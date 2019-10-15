@@ -5,6 +5,7 @@
     * Create a pkl file in models directory
 
 How to access your enviornment variable
+`conda install python-dotenv`
 ```
 import os
 from dotenv import load_dotenv

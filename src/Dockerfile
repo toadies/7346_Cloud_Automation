@@ -13,3 +13,5 @@ ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PA
 WORKDIR /var/app
 
 COPY malware /var/app/malware
+
+# Mount S3 Volume
