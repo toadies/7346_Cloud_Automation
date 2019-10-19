@@ -1,17 +1,18 @@
-# https://medium.com/@chadlagore/conda-environments-with-docker-82cdc9d25754
-# Use pycloud.env.yml and auto activate
-
 FROM continuumio/miniconda:4.7.10
 
-ADD pycloud.env.yml ./tmp/environment.yml
-RUN conda env create -f /tmp/environment.yml
+RUN apt-get -y update && apt-get install -y --no-install-recommends \
+         wget \
+         nginx \
+    && rm -rf /var/lib/apt/lists/*
 
-# Pull the environment name out of the environment.yml
-RUN echo "source activate $(head -1 /tmp/environment.yml | cut -d' ' -f2)" > ~/.bashrc
-ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PATH
+ADD requirements.yml ./tmp/requirements.yml
+# RUN while read requirement; do conda install --yes $requirement; done < ./tmp/requirements.txt
+RUN conda env update -n base --file ./tmp/requirements.yml
 
-WORKDIR /var/app
+ENV PYTHONUNBUFFERED=TRUE
+ENV PYTHONDONTWRITEBYTECODE=TRUE
+ENV PATH="/opt/program:${PATH}"
 
-COPY malware /var/app/malware
-
-# Mount S3 Volume
+# Set up the program in the image
+COPY random-forest /opt/program
+WORKDIR /opt/program

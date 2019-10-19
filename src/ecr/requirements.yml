@@ -1,0 +1,12 @@
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python==3.7
+  - scikit-learn
+  - numpy
+  - scipy
+  - pandas
+  - sympy
+  - joblib

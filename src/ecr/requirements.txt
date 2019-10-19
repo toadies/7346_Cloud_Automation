@@ -1,0 +1,11 @@
+python=3.7.*
+scikit-learn
+numpy
+scipy
+pandas
+sympy
+joblib
+-c conda-forge request
+flask
+gevent
+gunicorn
