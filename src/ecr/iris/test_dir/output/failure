@@ -2,29 +2,29 @@ Exception during training: Target is multiclass but average='binary'. Please cho
 joblib.externals.loky.process_executor._RemoteTraceback: 
 """
 Traceback (most recent call last):
-  File "/opt/conda/lib/python3.7/site-packages/joblib/externals/loky/process_executor.py", line 418, in _process_worker
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/joblib/externals/loky/process_executor.py", line 418, in _process_worker
     r = call_item()
-  File "/opt/conda/lib/python3.7/site-packages/joblib/externals/loky/process_executor.py", line 272, in __call__
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/joblib/externals/loky/process_executor.py", line 272, in __call__
     return self.fn(*self.args, **self.kwargs)
-  File "/opt/conda/lib/python3.7/site-packages/joblib/_parallel_backends.py", line 567, in __call__
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/joblib/_parallel_backends.py", line 600, in __call__
     return self.func(*args, **kwargs)
-  File "/opt/conda/lib/python3.7/site-packages/joblib/parallel.py", line 225, in __call__
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/joblib/parallel.py", line 256, in __call__
     for func, args, kwargs in self.items]
-  File "/opt/conda/lib/python3.7/site-packages/joblib/parallel.py", line 225, in <listcomp>
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/joblib/parallel.py", line 256, in <listcomp>
     for func, args, kwargs in self.items]
-  File "/opt/conda/lib/python3.7/site-packages/sklearn/model_selection/_validation.py", line 556, in _fit_and_score
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/sklearn/model_selection/_validation.py", line 556, in _fit_and_score
     test_scores = _score(estimator, X_test, y_test, scorer, is_multimetric)
-  File "/opt/conda/lib/python3.7/site-packages/sklearn/model_selection/_validation.py", line 599, in _score
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/sklearn/model_selection/_validation.py", line 599, in _score
     return _multimetric_score(estimator, X_test, y_test, scorer)
-  File "/opt/conda/lib/python3.7/site-packages/sklearn/model_selection/_validation.py", line 629, in _multimetric_score
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/sklearn/model_selection/_validation.py", line 629, in _multimetric_score
     score = scorer(estimator, X_test, y_test)
-  File "/opt/conda/lib/python3.7/site-packages/sklearn/metrics/scorer.py", line 97, in __call__
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/sklearn/metrics/scorer.py", line 97, in __call__
     **self._kwargs)
-  File "/opt/conda/lib/python3.7/site-packages/sklearn/metrics/classification.py", line 1569, in precision_score
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/sklearn/metrics/classification.py", line 1569, in precision_score
     sample_weight=sample_weight)
-  File "/opt/conda/lib/python3.7/site-packages/sklearn/metrics/classification.py", line 1415, in precision_recall_fscore_support
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/sklearn/metrics/classification.py", line 1415, in precision_recall_fscore_support
     pos_label)
-  File "/opt/conda/lib/python3.7/site-packages/sklearn/metrics/classification.py", line 1254, in _check_set_wise_labels
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/sklearn/metrics/classification.py", line 1254, in _check_set_wise_labels
     % (y_type, average_options))
 ValueError: Target is multiclass but average='binary'. Please choose another average setting, one of [None, 'micro', 'macro', 'weighted'].
 """
@@ -32,22 +32,22 @@ ValueError: Target is multiclass but average='binary'. Please choose another ave
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/opt/program/train", line 79, in train
+  File "<ipython-input-8-cbe6ed88902f>", line 43, in <module>
     grid_clf.fit(train_X, train_y)
-  File "/opt/conda/lib/python3.7/site-packages/sklearn/model_selection/_search.py", line 688, in fit
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/sklearn/model_selection/_search.py", line 688, in fit
     self._run_search(evaluate_candidates)
-  File "/opt/conda/lib/python3.7/site-packages/sklearn/model_selection/_search.py", line 1149, in _run_search
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/sklearn/model_selection/_search.py", line 1149, in _run_search
     evaluate_candidates(ParameterGrid(self.param_grid))
-  File "/opt/conda/lib/python3.7/site-packages/sklearn/model_selection/_search.py", line 667, in evaluate_candidates
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/sklearn/model_selection/_search.py", line 667, in evaluate_candidates
     cv.split(X, y, groups)))
-  File "/opt/conda/lib/python3.7/site-packages/joblib/parallel.py", line 934, in __call__
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/joblib/parallel.py", line 1016, in __call__
     self.retrieve()
-  File "/opt/conda/lib/python3.7/site-packages/joblib/parallel.py", line 833, in retrieve
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/joblib/parallel.py", line 908, in retrieve
     self._output.extend(job.get(timeout=self.timeout))
-  File "/opt/conda/lib/python3.7/site-packages/joblib/_parallel_backends.py", line 521, in wrap_future_result
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/site-packages/joblib/_parallel_backends.py", line 554, in wrap_future_result
     return future.result(timeout=timeout)
-  File "/opt/conda/lib/python3.7/concurrent/futures/_base.py", line 435, in result
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/concurrent/futures/_base.py", line 432, in result
     return self.__get_result()
-  File "/opt/conda/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+  File "/Users/christopherballenger/py/miniconda3/envs/pycloud/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
     raise self._exception
 ValueError: Target is multiclass but average='binary'. Please choose another average setting, one of [None, 'micro', 'macro', 'weighted'].

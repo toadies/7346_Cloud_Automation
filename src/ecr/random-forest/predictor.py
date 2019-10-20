@@ -14,7 +14,8 @@ import traceback
 import flask
 
 import pandas as pd
-import xgboost
+from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
 
 prefix = '/opt/ml/'
 model_path = os.path.join(prefix, 'model')
@@ -29,7 +30,7 @@ class ScoringService(object):
     def get_model(cls):
         """Get the model object for this instance, loading it if it's not already loaded."""
         if cls.model == None:
-            with open(os.path.join(model_path, 'xgboost-model.pkl'), 'rb') as inp:
+            with open(os.path.join(model_path, 'iris-randomforest.pkl'), 'rb') as inp:
                 cls.model = pickle.load(inp)
         return cls.model
 

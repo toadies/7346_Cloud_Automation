@@ -10,3 +10,6 @@ dependencies:
   - pandas
   - sympy
   - joblib
+  - flask
+  - gevent
+  - gunicorn

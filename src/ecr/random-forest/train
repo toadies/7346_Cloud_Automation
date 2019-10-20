@@ -48,8 +48,8 @@ def train():
         train_data = pd.concat(raw_data)
 
         # labels are in the first column
-        train_y = train_data.ix[:,0]
-        train_X = train_data.ix[:,1:]
+        train_y = train_data.iloc[:,0]
+        train_X = train_data.iloc[:,1:]
 
         clf = RandomForestClassifier(random_state=42)
 
@@ -71,15 +71,15 @@ def train():
         grid_clf = GridSearchCV(
             estimator = clf, 
             param_grid=grid_params, 
-            # cv=kfold_cv, 
-            scoring=scoring,
+            cv=5, 
+#             scoring=scoring,
             refit='auc',
             n_jobs=-1,verbose=1,return_train_score=False)
 
         grid_clf.fit(train_X, train_y)
 
         # save the model
-        with open(os.path.join(model_path, 'randomforest.pkl'), 'wb') as out:
+        with open(os.path.join(model_path, 'iris-randomforest.pkl'), 'wb') as out:
             pickle.dump(grid_clf, out, protocol=0)
         print('Training complete.')
 
