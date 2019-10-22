@@ -13,4 +13,5 @@ load_dotenv(dotenv_path=".env")
 
 print(os.getenv("AWS_ACCESS_ID"))
 print(os.getenv("AWS_SECRET_ACCESS_KEY"))
+
 ```
