@@ -1,4 +1,3 @@
-name: pycloud
 channels:
   - bioconda
   - conda-forge
@@ -11,8 +10,6 @@ dependencies:
   - numpy
   - scipy
   - matplotlib
-  - ipython
-  - jupyter
   - pandas
   - sympy
   - nose
