@@ -16,4 +16,3 @@ dependencies:
   - seaborn
   - joblib
   - requests
-  - boto3
