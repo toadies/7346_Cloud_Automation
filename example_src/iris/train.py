@@ -14,8 +14,10 @@ import traceback
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import KFold
 from sklearn import preprocessing
+from sklearn import metrics
+from sklearn.model_selection import train_test_split
+
 
 # These are the paths to where SageMaker mounts interesting things in your container.
 if __name__ == '__main__':
@@ -42,10 +44,15 @@ if __name__ == '__main__':
     iris = pd.read_csv(os.path.join(args.train,"iris.csv"))
 
     # labels are in the first column
-    train_X = iris.iloc[:,1:].values
+    X = iris.iloc[:,1:].values
 
     le = preprocessing.LabelEncoder()
-    train_y = le.fit_transform(iris.iloc[:,0])
+    y = le.fit_transform(iris.iloc[:,0])
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, 
+        test_size=0.1, 
+        stratify=y,
+        random_state=42)
 
     print("trian model")
     clf = RandomForestClassifier(
@@ -54,7 +61,15 @@ if __name__ == '__main__':
         min_samples_leaf=25,
         random_state=42)
 
-    clf.fit(train_X, train_y)
+    clf.fit(X_train, y_train)
+
+    y_pred = clf.predict(X_test)
+
+    acc = metrics.accuracy_score(y_test, y_pred)
+
+    print("Accuracy:", acc)
+
+    # pscore_train = metrics.accuracy_score(y_train, pred_train)
 
     print("save model")
     # Print the coefficients of the trained classifier, and save the coefficients
