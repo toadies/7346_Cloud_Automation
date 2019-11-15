@@ -5,95 +5,68 @@
 from __future__ import print_function
 
 import os
+import argparse
 import json
-import pickle
+import joblib
 import sys
 import traceback
 
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import GridSearchCV
-from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import KFold
+from sklearn import preprocessing
 
 # These are the paths to where SageMaker mounts interesting things in your container.
-
-prefix = ''
-
-input_path = prefix + 'data'
-output_path = os.path.join(prefix, 'output')
-model_path = os.path.join(prefix, 'model')
-
-# This algorithm has a single channel of input data called 'training'. Since we run in
-# File mode, the input files are copied to the directory specified here.
-channel_name='training'
-training_path = os.path.join(input_path, channel_name)
-
-# The function to execute the training.
-def train():
-    print('Starting the training.')
-    try:
-
-        # Take the set of files and read them all into a single pandas dataframe
-        input_files = [ os.path.join(training_path, file) for file in os.listdir(training_path) ]
-        if len(input_files) == 0:
-            raise ValueError(('There are no files in {}.\n' +
-                              'This usually indicates that the channel ({}) was incorrectly specified,\n' +
-                              'the data specification in S3 was incorrectly specified or the role specified\n' +
-                              'does not have permission to access the data.').format(training_path, channel_name))
-        raw_data = [ pd.read_csv(file, header=None) for file in input_files ]
-        train_data = pd.concat(raw_data)
-
-        # labels are in the first column
-        train_y = train_data.iloc[:,0]
-        train_X = train_data.iloc[:,1:]
-
-        clf = RandomForestClassifier(random_state=42)
-
-        grid_params = [{
-            "max_features" : ["auto","log2",0.20, 0.30],
-            "n_estimators" : [10,50,100],
-            "min_samples_leaf" : [25, 50, 100]
-        }]
-
-        scoring = {
-            'acc':'accuracy',
-            'precision':'precision',
-            'recall':'recall',
-            'auc':'roc_auc',
-            'mse':'neg_mean_squared_error',
-            'r2':'r2'
-        }
-
-        grid_clf = GridSearchCV(
-            estimator = clf, 
-            param_grid=grid_params, 
-            cv=5, 
-#             scoring=scoring,
-            refit='auc',
-            n_jobs=-1,verbose=1,return_train_score=False)
-
-        grid_clf.fit(train_X, train_y)
-
-        # save the model
-        with open(os.path.join(model_path, 'iris-randomforest.pkl'), 'wb') as out:
-            pickle.dump(grid_clf, out, protocol=0)
-        print('Training complete.')
-
-    except Exception as e:
-        # Write out an error file. This will be returned as the failureReason in the
-        # DescribeTrainingJob result.
-        trc = traceback.format_exc()
-        with open(os.path.join(output_path, 'failure'), 'w') as s:
-            s.write('Exception during training: ' + str(e) + '\n' + trc)
-        # Printing this causes the exception to be in the training job logs, as well.
-        print('Exception during training: ' + str(e) + '\n' + trc, file=sys.stderr)
-        # A non-zero exit code causes the training job to be marked as Failed.
-        sys.exit(255)
-
 if __name__ == '__main__':
-    train()
+    print("load data")
+    parser = argparse.ArgumentParser()
 
-    # A zero exit code causes the job to be marked a Succeeded.
-    sys.exit(0)
+    # Sagemaker specific arguments. Defaults are set in the environment variables.
+
+    try:
+        sm_output = os.environ['SM_OUTPUT_DATA_DIR']
+        sm_model = os.environ['SM_MODEL_DIR']
+        sm_train = os.environ['SM_CHANNEL_TRAIN']
+    except:
+        sm_output = "output/"
+        sm_model = "model/"
+        sm_train = "data/"
+
+    parser.add_argument('--output-data-dir', type=str, default=sm_output)
+    parser.add_argument('--model-dir', type=str, default=sm_model)
+    parser.add_argument('--train', type=str, default=sm_train)
+
+    args = parser.parse_args()
+
+    iris = pd.read_csv(os.path.join(args.train,"iris.csv"))
+
+    # labels are in the first column
+    train_X = iris.iloc[:,1:].values
+
+    le = preprocessing.LabelEncoder()
+    train_y = le.fit_transform(iris.iloc[:,0])
+
+    print("trian model")
+    clf = RandomForestClassifier(
+        max_features="auto",
+        n_estimators=10,
+        min_samples_leaf=25,
+        random_state=42)
+
+    clf.fit(train_X, train_y)
+
+    print("save model")
+    # Print the coefficients of the trained classifier, and save the coefficients
+    joblib.dump(clf, os.path.join(args.model_dir, "iris-rf.pkl"))
+    joblib.dump(le, os.path.join(args.model_dir, "iris-labels.pkl"))
+
+
+def model_fn(model_dir):
+    """Deserialized and return fitted model
+
+    Note that this should have the same name as the serialized model in the main method
+    """
+    clf = joblib.load(os.path.join(model_dir, "iris-rf.pkl"))
+    return clfs
+
