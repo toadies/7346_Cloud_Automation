@@ -1,6 +1,0 @@
-python==3.7
-pip
-scikit-learn
-pandas
-numpy
-scipy
