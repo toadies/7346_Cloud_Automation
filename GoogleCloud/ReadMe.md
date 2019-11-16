@@ -1,0 +1,1 @@
+Here lie the documents for the google cloud implementation.  model.py is the model to use with the iris_train.csv and iris_test.csv data sets.  The requirements file and the aforementioned files need to be saved in a particular locations which will be uploaded to a bucket which will be mounted on the goolge instance.
