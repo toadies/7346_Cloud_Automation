@@ -15,7 +15,6 @@ def load_model(key):
     
     return model
 
-
 app = Flask(__name__)
 
 S3 = boto3.client('s3')
